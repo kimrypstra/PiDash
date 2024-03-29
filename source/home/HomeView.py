@@ -1,8 +1,6 @@
 import kivy
-kivy.require('2.1.0')
 
-from kivy.app import App
-from kivy.uix.label import Label
+from kivy.uix.button import Button
 from kivy.uix.widget import Widget 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.screenmanager import ScreenManager, Screen 
@@ -11,16 +9,16 @@ from source.settings.SettingsView import SettingsView
 
 # Topmost view, basically just a containter for navigation between 
 # Dash and Settings etc. 
-class HomeView(Widget):
+class HomeView(BoxLayout):
 	def __init__(self, **kwargs):
 		super(HomeView, self).__init__(**kwargs)
 
 		self.screen_manager = ScreenManager()
 		
-		screen_one = DashView()
-		screen_two = SettingsView()
+		dash = DashView()
+		settings = SettingsView()
 
-		self.screen_manager.add_widget(screen_one)
-		self.screen_manager.add_widget(screen_two)
+		self.screen_manager.add_widget(dash)
+		self.screen_manager.add_widget(settings)
 
 		self.add_widget(self.screen_manager)
