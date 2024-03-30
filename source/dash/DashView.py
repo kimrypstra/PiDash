@@ -6,6 +6,7 @@ from kivy.uix.widget import Widget
 from kivy.uix.gridlayout import GridLayout
 from kivy.uix.screenmanager import Screen 
 from source.dash.DashViewModel import DashViewModel
+from source.gauge.NumericGauge import NumericGauge
 
 class DashView(Screen):
 	def __init__(self, **kwargs):
@@ -15,7 +16,7 @@ class DashView(Screen):
 
 		layout = GridLayout()
 		layout.cols = 2
-		layout.add_widget(Label(text="Dash"))
+		layout.add_widget(NumericGauge())
 		layout.add_widget(Label(text="Dash"))
 		layout.add_widget(Label(text="Dash"))
 
