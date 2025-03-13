@@ -15,12 +15,15 @@ class CANProvider:
 		# self.stream = self.can_service.stream
 		return self.can_service.subscribe_to_pid(pid)
 
+import math
+from threading import Thread
+
 import reactivex as rx
 from reactivex import Observable
 from reactivex import operators as ops, scheduler
-import math
-from threading import Thread
+
 from .Constants import GAUGE_SAMPLE_RATE
+from ..models.CANFrame import CANFrame
 
 class MockCANService: 
 	_shared = None
@@ -55,34 +58,3 @@ class MockCANService:
 		return self.stream.pipe(
 				ops.filter(lambda CANFrame: CANFrame.pid == pid)
 			)
-
-
-from dataclasses import dataclass
-
-@dataclass(frozen=True)
-class CANFrame:
-	pid: str
-	value: str
-
-
-class DisposeBag: 
-	_shared = None
-
-	@classmethod
-	def shared(cls):
-		if cls._shared is None:
-			cls._shared = cls()
-		return cls._shared
-
-	def __init__(self):
-		self.subscriptions = []
-		import atexit
-		atexit.register(self.dispose)
-
-	def add(self, subscription):
-		self.subscriptions.append(subscription)
-
-	def dispose(self):
-		for subscription in self.subscriptions:
-			subscription.dispose()
-		self.subscriptions.clear()

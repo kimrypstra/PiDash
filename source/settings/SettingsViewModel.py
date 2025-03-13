@@ -1,4 +1,3 @@
-
 class SettingsViewModel: 
 
 	def set_nav_controller(self, nav_controller):

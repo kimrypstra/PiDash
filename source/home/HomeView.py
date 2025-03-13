@@ -1,9 +1,9 @@
 import kivy
-
 from kivy.uix.boxlayout import BoxLayout
-from source.shared.NavController import NavController
+
 from source.dash.DashView import DashView  
 from source.settings.SettingsView import SettingsView  
+from source.shared.NavController import NavController
 
 # Topmost view, basically just a containter for navigation between 
 # Dash and Settings etc. 

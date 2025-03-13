@@ -1,6 +1,7 @@
+from kivy.properties import Property, StringProperty 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.properties import Property, StringProperty 
+
 from ..shared.DisposeBag import DisposeBag
 
 class NumericGauge(BoxLayout):
