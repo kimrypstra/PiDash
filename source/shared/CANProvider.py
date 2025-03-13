@@ -11,8 +11,6 @@ class CANProvider:
 		self.can_service = MockCANService()
 
 	def subscribe_to_pid(self, pid):
-		# For now, just emit the stream. Later, filter on the pid
-		# self.stream = self.can_service.stream
 		return self.can_service.subscribe_to_pid(pid)
 
 import math
@@ -56,5 +54,5 @@ class MockCANService:
 
 	def subscribe_to_pid(self, pid):
 		return self.stream.pipe(
-				ops.filter(lambda CANFrame: CANFrame.pid == pid)
+				ops.filter(lambda frame: frame.pid == pid)
 			)
