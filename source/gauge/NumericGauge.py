@@ -1,6 +1,8 @@
 from kivy.properties import Property, StringProperty 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.graphics import Rectangle, Color
+
 
 from ..shared.DisposeBag import DisposeBag
 
@@ -10,13 +12,16 @@ class NumericGauge(BoxLayout):
 		super(NumericGauge, self).__init__(**kwargs)
 
 		self.view_model = NumericGaugeViewModel()
-		self.view_model.bind(value = self.update_text)
+		self.view_model.bind(value = self.update_canvas)
 
 		self.label = Label(text = 'initial')
 		self.add_widget(self.label)
 
-	def update_text(self, value, something):
-		self.label.text = something
+	def update_canvas(self, value, something):
+		# self.label.text = something
+		with self.canvas.before:  # `before` ensures it’s drawn behind other elements
+			Color(0, 1, 0, 1)  # Green background (RGBA)
+			self.rect = Rectangle(pos=self.pos, size=self.size)
 
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
