@@ -21,8 +21,8 @@ class DashView(Screen):
 
 		layout = GridLayout()
 		layout.cols = NUM_OF_COLUMNS
-		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_TEST))
-		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_POS_NEG))
+		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_TEST, 'Boost', 'psi'))
+		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_POS_NEG, 'Pos/neg', '+/-'))
 		layout.add_widget(Label(text="Dash"))
 
 		button = Button(text="Settings")

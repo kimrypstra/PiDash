@@ -1,16 +1,16 @@
 from kivy.properties import Property, StringProperty 
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
+from kivy.uix.widget import Widget
 from kivy.graphics import Rectangle
 
-from source.shared.Constants import GAUGE_FONT_SIZE
 from source.shared.Colours import COLOUR_RED, COLOUR_BLACK
-from source.shared.Fonts import FONT_LARGE
-from ..shared.DisposeBag import DisposeBag
+from source.shared.Fonts import FONT_BLACK, FONT_SEMIBOLD, FONT_SIZE_TITLE, FONT_SIZE_GAUGE
+from source.shared.DisposeBag import DisposeBag
 
 class NumericGauge(BoxLayout):
 
-	def __init__(self, pid, threshold, conversion, **kwargs):
+	def __init__(self, pid, threshold, conversion, title, units, **kwargs):
 		"""
 		Initialises an instance of NumericGauge, indended for displaying numerical information _as numbers_
 		like RPM, speed, or gear position etc. Not intended for graphical display of numerical information.
@@ -22,12 +22,36 @@ class NumericGauge(BoxLayout):
 			conversion (CANFrame) -> str: A function that converts the data from the raw CAN frame into a value displayable in the gauge
 		"""
 		super(NumericGauge, self).__init__(**kwargs)
-		self.label = Label(
-				text = 'initial', 
-				font_name = FONT_LARGE,
-				font_size = GAUGE_FONT_SIZE
+
+		self.units = units
+
+		v_stack = BoxLayout(orientation = 'vertical', padding = 50, spacing = 0)
+
+		self.title_label = Label(
+				text = title, 
+				font_name = FONT_SEMIBOLD,
+				font_size = FONT_SIZE_TITLE,
+				size_hint_y = 0.1,
 			)
-		self.add_widget(self.label)
+		v_stack.add_widget(self.title_label)
+
+		self.label = Label(
+				text = '', 
+				font_name = FONT_BLACK,
+				font_size = FONT_SIZE_GAUGE,
+				size_hint_y = 1
+			)
+		v_stack.add_widget(self.label)
+
+		self.units_label = Label(
+				text = units, 
+				font_name = FONT_SEMIBOLD,
+				font_size = FONT_SIZE_TITLE,
+				size_hint_y = 0.1
+			)
+		v_stack.add_widget(self.units_label)
+
+		self.add_widget(v_stack)
 
 		self.view_model = NumericGaugeViewModel(pid, threshold, conversion)
 		self.view_model.bind(value = self.update_label)
@@ -41,14 +65,16 @@ class NumericGauge(BoxLayout):
 			self.canvas.before.add(COLOUR_RED if view_model.alarm else COLOUR_BLACK)
 			self.rect = Rectangle(pos = self.pos, size = self.size)
 
-from kivy.event import EventDispatcher
-from kivy.clock import Clock
-from kivy.properties import Property, StringProperty, BooleanProperty
-from source.shared.CANProvider import CANProvider 
-import reactivex as rx
-from reactivex import operators as ops
 import time 
 import threading
+
+from kivy.clock import Clock
+from kivy.event import EventDispatcher
+from kivy.properties import Property, StringProperty, BooleanProperty
+import reactivex as rx
+from reactivex import operators as ops
+
+from source.shared.CANProvider import CANProvider 
 
 class NumericGaugeViewModel(EventDispatcher):
 

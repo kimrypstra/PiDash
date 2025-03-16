@@ -1,2 +1,6 @@
 # Fonts
-FONT_LARGE = 'res/fonts/TitilliumWeb-Black.ttf'
+FONT_BLACK = 'res/fonts/TitilliumWeb-Black.ttf'
+FONT_SEMIBOLD = 'res/fonts/TitilliumWeb-SemiBold.ttf'
+
+FONT_SIZE_GAUGE = 200
+FONT_SIZE_TITLE = 75
