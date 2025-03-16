@@ -3,7 +3,8 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.graphics import Rectangle
 
-from source.shared.Constants import COLOUR_RED, COLOUR_BLACK, GAUGE_FONT_SIZE
+from source.shared.Constants import GAUGE_FONT_SIZE
+from source.shared.Colours import COLOUR_RED, COLOUR_BLACK
 from source.shared.Fonts import FONT_LARGE
 from ..shared.DisposeBag import DisposeBag
 
@@ -27,7 +28,7 @@ class NumericGauge(BoxLayout):
 				font_size = GAUGE_FONT_SIZE
 			)
 		self.add_widget(self.label)
-		
+
 		self.view_model = NumericGaugeViewModel(pid, threshold, conversion)
 		self.view_model.bind(value = self.update_label)
 		self.view_model.bind(alarm = self.update_canvas)
