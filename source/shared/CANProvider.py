@@ -49,7 +49,8 @@ class MockCANService:
 				ops.repeat(),
 				ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 				ops.sample(GAUGE_SAMPLE_RATE),
-				ops.map(lambda i: CANFrame(pid=1, value=i)) # later, pid will be provided by the actual CAN frame
+				ops.map(lambda i: CANFrame(pid=1, value=i)), # later, pid will be provided by the actual CAN frame
+				ops.share()
 			)
 
 	def subscribe_to_pid(self, pid):
