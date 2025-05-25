@@ -1,3 +1,7 @@
+from kivy.app import App
+
+from source.shared.DisposeBag import DisposeBag
+
 class SettingsViewModel: 
 
 	def set_nav_controller(self, nav_controller):
@@ -5,3 +9,11 @@ class SettingsViewModel:
 
 	def on_back(self, *kwargs): 
 		self.nav_controller.back()
+
+	def on_exit(self):
+		dispose_bag = DisposeBag.shared()
+		dispose_bag.dispose()
+		Clock.schedule_once(self.stop_app, 1)
+
+	def stop_app(self):
+		App.get_running_app().stop()

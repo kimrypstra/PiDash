@@ -14,3 +14,6 @@ class CANProvider:
 
 	def subscribe_to_pid(self, pid):
 		return self.can_service.subscribe_to_pid(pid)
+
+	def shutdown(self):
+		self.can_service.shutdown()

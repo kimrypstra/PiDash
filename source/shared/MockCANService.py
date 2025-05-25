@@ -42,3 +42,6 @@ class MockCANService:
 		return self.stream.pipe(
 				ops.filter(lambda frame: frame.pid == pid)
 			)
+
+	def shutdown(self):
+		self.stream.dispose()
