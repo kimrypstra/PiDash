@@ -1,5 +1,5 @@
 # Gauge Constants
-GAUGE_SAMPLE_RATE = 1000 # emissions per x milliseconds
+GAUGE_SAMPLE_RATE = 1 # emissions per x seconds
 GAUGE_FONT_SIZE = 200
 TITLE_FONT_SIZE = 30
 
