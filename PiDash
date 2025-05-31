@@ -1,5 +1,8 @@
 #!/usr/bin/env python3
 
+# Wrapper around PiDash.py
+# Checks that PiDash is in PATH, then fetches any changes from remote
+
 import os 
 import sys
 
