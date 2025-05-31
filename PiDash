@@ -1,0 +1,66 @@
+#!/usr/bin/env python3
+
+import os 
+import sys
+
+from git import Repo, exc
+
+repo_path = os.path.dirname(os.path.realpath(__file__))
+script_path = os.path.join(repo_path, "PiDash.py")
+
+def check_for_path():
+	print("Checking for installation in PATH...")
+
+	shell = os.environ.get("SHELL", "")
+	home = os.path.expanduser("~")
+	script_dir = os.path.dirname(os.path.realpath(__file__))
+	export_line = f'export PATH="{script_dir}:$PATH"'
+
+	if "zsh" in shell:
+		rc_file = os.path.join(home, ".zshrc")
+	elif "bash" in shell:
+		rc_file = os.path.join(home, ".bashrc")
+	else:
+		print(f"Invalid shell: {shell}. Bailing out.")
+		return 
+
+	with open(rc_file, "r") as file:
+		lines = file.read().splitlines()
+
+	if export_line not in lines:
+		with open(rc_file, "a") as file:
+			file.write(f"\n{export_line}\n")
+		print("Added to PATH!")
+		return 
+
+	print("Already in PATH!")
+
+def check_for_updates():
+	repo = Repo(repo_path)
+
+	if repo.is_dirty(untracked_files=True):
+		print("Uncommited changes, not updating")
+		return
+
+	branch = repo.active_branch.name 
+	if branch != 'main':
+		print("Not on main branch, not updating")
+		return 
+
+	origin = repo.remotes.origin
+	try: 
+		origin.fetch()
+
+		commits_behind = repo.iter_commits('HEAD..origin/main')
+		if any(commits_behind):
+			print(f"Behind by {length(commits_behind)}. Pulling...")
+			origin.pull()
+		else:
+			print("Already up to date. Continuing execution...")
+	except (exc.GitError, OSError) as e: 
+		print(f"Failed to update with error: {e}. \nContinuing launch.")
+
+check_for_path()
+check_for_updates()
+
+os.execv(sys.executable, [sys.executable, script_path])
