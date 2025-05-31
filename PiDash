@@ -56,7 +56,7 @@ def check_for_updates():
 
 		commits_behind = repo.iter_commits('HEAD..origin/main')
 		count = sum(1 for _ in commits_behind)
-		if any(commits_behind):
+		if count:
 			print(f"Behind by {count}. Pulling...")
 			origin.pull()
 		else:
