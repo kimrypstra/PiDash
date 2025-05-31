@@ -18,7 +18,7 @@ class DisposeBag:
 	def dispose(self):
 		print("Cleaning up subscriptions")
 
-		# Run disposal on background thread so Kivy can do it's thing on main thread
+		# Run disposal on background thread so Kivy can do its thing on main thread
 		def cleanup(*kwargs):
 			for subscription in self.subscriptions:
 				subscription.dispose()
