@@ -1,3 +1,5 @@
+from threading import Thread
+
 class DisposeBag: 
 	_shared = None
 
@@ -9,14 +11,17 @@ class DisposeBag:
 
 	def __init__(self):
 		self.subscriptions = []
-		import atexit
-		atexit.register(self.dispose)
 
 	def add(self, subscription):
 		self.subscriptions.append(subscription)
 
 	def dispose(self):
 		print("Cleaning up subscriptions")
-		for subscription in self.subscriptions:
-			subscription.dispose()
-		self.subscriptions.clear()
+
+		# Run disposal on background thread so Kivy can do it's thing on main thread
+		def cleanup(*kwargs):
+			for subscription in self.subscriptions:
+				subscription.dispose()
+			self.subscriptions.clear()
+
+		Thread(target=cleanup).start()
