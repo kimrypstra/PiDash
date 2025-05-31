@@ -53,7 +53,7 @@ def check_for_updates():
 
 		commits_behind = repo.iter_commits('HEAD..origin/main')
 		if any(commits_behind):
-			print(f"Behind by {length(commits_behind)}. Pulling...")
+			print(f"Behind by {len(commits_behind)}. Pulling...")
 			origin.pull()
 		else:
 			print("Already up to date. Continuing execution...")
