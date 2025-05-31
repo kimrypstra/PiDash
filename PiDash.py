@@ -3,6 +3,8 @@ from kivy.config import Config
 Config.set('graphics', 'fullscreen', 'auto')
 Config.set('graphics', 'borderless', '1')
 Config.set('graphics', 'resizable', '0')
+Config.set('input', 'mouse', 'mouse,disable_multitouch')
+Config.set('graphics', 'show_cursor', '0')
 
 # Then start the app
 import kivy
