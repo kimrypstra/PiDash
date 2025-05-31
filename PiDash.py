@@ -1,3 +1,8 @@
+from kivy.config import Config
+Config.set('graphics', 'fullscreen', 'auto')
+Config.set('graphics', 'borderless', '1')
+Config.set('graphics', 'resizable', '0')
+
 import kivy
 from kivy.app import App  
 from kivy.config import Config
