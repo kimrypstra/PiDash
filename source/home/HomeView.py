@@ -9,7 +9,7 @@ from source.shared.NavController import NavController
 # Dash and Settings etc. 
 class HomeView(BoxLayout):
 	def __init__(self, **kwargs):
-		super(HomeView, self).__init__(**kwargs)
+		super(HomeView, self).__init__(padding=5, **kwargs)
 
 		self.nav_controller = NavController()
 		dash = DashView(name="Dash")
