@@ -10,10 +10,10 @@ from source.shared.Images import BUTTON_BACKGROUND, BUTTON_BACKGROUND_DOWN, BUTT
 
 class DashButton(BoxLayout):
 	def __init__(self, label, binding, **kwargs):
-		super(DashButton, self).__init__(orientation='horizontal', **kwargs)
+		super(DashButton, self).__init__(orientation='horizontal', spacing=0, **kwargs)
 
 		self.button = Button(text=label, size_hint_y=None, height=BUTTON_HEIGHT, font_name=FONT_BOLD_ITALIC, font_size=FONT_SIZE_BUTTON)
-		
+
 		self.button.background_normal = BUTTON_BACKGROUND
 		self.button.background_down = BUTTON_BACKGROUND_DOWN
 		self.button.border= BUTTON_BACKGROUND_SLICE
