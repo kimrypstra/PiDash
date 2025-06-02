@@ -1,8 +1,5 @@
 # Gauge Constants
-GAUGE_SAMPLE_RATE = 1 # emissions per x seconds
-GAUGE_FONT_SIZE = 200
-TITLE_FONT_SIZE = 30
-
+GAUGE_SAMPLE_RATE = 1 # emissions per <x> seconds
 THRESHOLD_TEST = 0.5
 
-BUTTON_HEIGHT = 100
+BUTTON_HEIGHT = 100 # Note must contain button font size plus border thickness
