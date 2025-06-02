@@ -4,7 +4,7 @@ from kivy.uix.button import Button
 from kivy.graphics import Color, RoundedRectangle
 
 from source.shared.Constants import BUTTON_HEIGHT
-from source.shared.Fonts import FONT_BOLD_ITALIC, FONT_SIZE_BUTTON
+from source.shared.Fonts import FONT_ITALIC, FONT_SIZE_BUTTON
 from source.shared.Images import BUTTON_BACKGROUND, BUTTON_BACKGROUND_DOWN, BUTTON_BACKGROUND_SLICE
 
 
