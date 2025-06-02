@@ -21,7 +21,7 @@ class DashView(Screen):
 
 		self.view_model = DashViewModel()
 
-		layout = GridLayout()
+		layout = GridLayout(padding=5)
 		layout.cols = NUM_OF_COLUMNS
 		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_TEST, 'Boost', 'psi'))
 		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_POS_NEG, 'Pos/neg', '+/-'))
