@@ -20,10 +20,11 @@ class NavController(BoxLayout):
 			self.stack.append(screen.name)
 
 	def back(self): 
-		if len(self.stack) != 0:
-			self.screen_manager.transition = SlideTransition(direction = 'right')
+		if self.stack:
 			self.stack.pop()
-			self.screen_manager.current = self.stack[-1]
+			if self.stack:
+				self.screen_manager.transition = SlideTransition(direction = 'right')
+				self.screen_manager.current = self.stack[-1]
 
 	def push(self, name):  
 		if name in self.screens:
