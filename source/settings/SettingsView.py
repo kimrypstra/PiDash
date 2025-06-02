@@ -7,6 +7,7 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.widget import Widget 
 
 from source.settings.SettingsViewModel import SettingsViewModel
+from source.shared.views.DashButton import DashButton
 from source.shared.Fonts import FONT_SEMIBOLD, FONT_SIZE_TITLE
 
 class SettingsView(Screen):
@@ -24,12 +25,10 @@ class SettingsView(Screen):
 		label.size_hint_y = 0.2
 		self.layout.add_widget(label)
 
-		exit_button = Button(text = "Quit")
-		exit_button.bind(on_press = self.view_model.on_exit)
+		exit_button = DashButton(label="Quit", binding=self.view_model.on_exit)
 		self.layout.add_widget(exit_button)
 
-		back_button = Button(text = "Back")
-		back_button.bind(on_press = self.view_model.on_back)
+		back_button = DashButton(label="Back", binding=self.view_model.on_back)
 		self.layout.add_widget(back_button)
 
 		self.add_widget(self.layout)

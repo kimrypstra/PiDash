@@ -1,13 +1,15 @@
 import kivy
 from kivy.uix.button import Button
 from kivy.uix.gridlayout import GridLayout
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.screenmanager import Screen 
 from kivy.uix.widget import Widget 
 
 from source.dash.DashViewModel import DashViewModel
 from source.gauge.NumericGauge import NumericGauge
-from source.shared.Constants import THRESHOLD_TEST
+from source.shared.Constants import THRESHOLD_TEST, BUTTON_HEIGHT
+from source.shared.views.DashButton import DashButton
 from source.shared.PIDs import PID_TEST
 from source.shared.Conversions import CONVERSION_TEST, CONVERSION_POS_NEG
 
@@ -23,10 +25,11 @@ class DashView(Screen):
 		layout.cols = NUM_OF_COLUMNS
 		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_TEST, 'Boost', 'psi'))
 		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_POS_NEG, 'Pos/neg', '+/-'))
-		layout.add_widget(Label(text="Dash"))
 
-		button = Button(text="Settings")
-		button.bind(on_press=self.view_model.on_settings)
+		# Spacer
+		layout.add_widget(BoxLayout(size_hint_y=None))
+
+		button = DashButton(label="Settings", binding=self.view_model.on_settings)
 		layout.add_widget(button)
 
 		self.add_widget(layout)
