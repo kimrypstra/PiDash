@@ -14,6 +14,7 @@ class CANService(Listener):
 	_shared = None
 
 	kill_switch = Subject()
+	can_subject = Subject()
 
 	@classmethod
 	def shared(cls):
@@ -27,9 +28,8 @@ class CANService(Listener):
 	def connect(self):
 		print("Connecting to CAN interface")
 		self.bus = Bus(channel='can0', bustype='socketcan')
-		self.notifier = Notifier(bus, [self])
-		self._subject = Subject()
-		self.stream = self._subject.pipe(
+		self.notifier = Notifier(self.bus, [self])
+		self.stream = self.can_subject.pipe(
 				ops.take_until(self.kill_switch),
 				ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 				ops.sample(GAUGE_SAMPLE_RATE),
@@ -38,7 +38,7 @@ class CANService(Listener):
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
-		self._subject.onNext(CANFrame(pid=msg.arbitration_id, value=int.from_bytes(msg.data, byteorder='big')))
+		self.can_subject.onNext(CANFrame(pid=msg.arbitration_id, value=int.from_bytes(msg.data, byteorder='big')))
 
 	# Returns a subscription to the common stream filtered for the provided id 
 	def subscribe_to_pid(self, pid):
