@@ -1,3 +1,4 @@
 kivy
 reactivex
 GitPython
+python-can
