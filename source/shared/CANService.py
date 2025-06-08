@@ -1,5 +1,6 @@
 import math
 
+from can import Bus, Listener, Notifier
 import reactivex as rx
 from reactivex import Observable
 from reactivex import operators as ops, scheduler
@@ -7,8 +8,6 @@ from reactivex.subject import Subject
 
 from .Constants import GAUGE_SAMPLE_RATE
 from ..models.CANFrame import CANFrame
-
-from can import Bus, Listener, Notifier 
 
 class CANService(Listener): 
 	_shared = None
@@ -47,9 +46,11 @@ class CANService(Listener):
 		)
 
 	def shutdown(self):
-		# Later, this should close the socket 
-		# For now, just kill the ops.repeat() stream so the subscriptions can dispose cleanly
+		# Kill the main stream so subscriptions can be disposed cleanly 
 		self.kill_switch.on_next(True)
+		# Kill the CAN connection
+		self.notifier.stop()
+		self.bus.shutdown()
 
 class MockCANService: 
 	_shared = None
