@@ -38,7 +38,7 @@ class CANService(Listener):
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
-		self.can_subject.onNext(CANFrame(pid=msg.arbitration_id, value=int.from_bytes(msg.data, byteorder='big')))
+		self.can_subject.on_next(CANFrame(pid=msg.arbitration_id, value=int.from_bytes(msg.data, byteorder='big')))
 
 	# Returns a subscription to the common stream filtered for the provided id 
 	def subscribe_to_pid(self, pid):
