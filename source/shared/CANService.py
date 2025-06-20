@@ -27,6 +27,7 @@ class CANService(Listener):
 	def connect(self):
 		print("Connecting to CAN interface")
 		self.bus = Bus(channel='can0', bustype='socketcan')
+		self.bus.set_filters([{"can_id": 0x514, "can_mask": 0x7FF}]) # Temporarily only allow 514 through. Set this in the subscribe func if it works
 		self.notifier = Notifier(self.bus, [self])
 		self.stream = self.can_subject.pipe(
 				ops.take_until(self.kill_switch),
