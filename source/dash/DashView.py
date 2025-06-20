@@ -8,10 +8,10 @@ from kivy.uix.widget import Widget
 
 from source.dash.DashViewModel import DashViewModel
 from source.gauge.NumericGauge import NumericGauge
-from source.shared.Constants import THRESHOLD_TEST, BUTTON_HEIGHT
+from source.shared.Constants import THRESHOLD_TEST, THRESHOLD_BRAKES, BUTTON_HEIGHT
 from source.shared.views.DashButton import DashButton
-from source.shared.Signals import SIGNAL_TEST
-from source.shared.Conversions import CONVERSION_TEST, CONVERSION_POS_NEG
+from source.shared.Signals import SIGNAL_TEST, SIGNAL_BRAKES
+from source.shared.Conversions import CONVERSION_TEST, CONVERSION_BRAKES
 
 NUM_OF_COLUMNS = 2
 
