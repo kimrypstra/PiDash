@@ -12,7 +12,7 @@ from dataclasses import dataclass
 # 00020 | 514 | 08 00 75 00 C8 DD 9D 00 ..u.....
 #
 # The first byte (08) carries the 'is the brake on' signal. The other bytes are some other things. 
-# So we construct Signal(514, 0, 1) to represent 'is the brake on' signal.
+# So we construct Signal(514, 0, 0) to represent 'is the brake on' signal.
 @dataclass
 class Signal: 
 	pid: int 
@@ -20,4 +20,4 @@ class Signal:
 	size: int
 
 SIGNAL_TEST = Signal(1,0,2)
-SIGNAL_BRAKES = Signal(514,0,1) # 08 = brake on, 00 = brake off 
+SIGNAL_BRAKES = Signal(514,0,0) # 08 = brake on, 00 = brake off 
