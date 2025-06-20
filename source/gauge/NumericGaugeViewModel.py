@@ -32,9 +32,8 @@ class NumericGaugeViewModel(EventDispatcher):
 
 	def set_value(self, can_frame):
 		# self.value = self.conversion(can_frame, self.signal)
-		print(can_frame)
 		value = self.conversion.convert(can_frame, self.signal)
 		self.value = str(value)
 		if isinstance(value, (int, float)):
 			self.alarm = value >= self.threshold
-		print(value)
+		print(f'New value: {value}')
