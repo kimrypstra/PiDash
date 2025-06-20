@@ -1,6 +1,6 @@
 import math
 
-from can import Bus, Listener, Notifier
+from can import Bus, Listener, Notifier, BufferedReader
 import reactivex as rx
 from reactivex import Observable
 from reactivex import operators as ops, scheduler
@@ -9,7 +9,7 @@ from reactivex.subject import Subject
 from .Constants import GAUGE_SAMPLE_RATE
 from ..models.CANFrame import CANFrame
 
-class CANService(Listener): 
+class CANService: 
 	_shared = None
 
 	kill_switch = Subject()
@@ -28,13 +28,21 @@ class CANService(Listener):
 		print("Connecting to CAN interface")
 		self.bus = Bus(channel='can0', bustype='socketcan')
 		self.bus.set_filters([{"can_id": 0x514, "can_mask": 0x7FF}]) # Temporarily only allow 514 through. Set this in the subscribe func if it works
-		self.notifier = Notifier(self.bus, [self])
+		self.reader = BufferedReader()
+		self.notifier = Notifier(self.bus, [self.reader])
+
+		self.reader_poller = rx.interval(GAUGE_SAMPLE_RATE).pipe(
+		    ops.map(lambda _: reader.get_message(timeout=0.0)),
+		    ops.filter(lambda msg: msg is not None),
+		    ops.share()
+		).subscribe(on_next=self.on_message_received)
+
 		self.stream = self.can_subject.pipe(
-				ops.take_until(self.kill_switch),
-				ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
-				ops.sample(GAUGE_SAMPLE_RATE),
-				ops.share()
-			)
+			ops.take_until(self.kill_switch),
+			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
+			ops.sample(GAUGE_SAMPLE_RATE),
+			ops.share()
+		)
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
