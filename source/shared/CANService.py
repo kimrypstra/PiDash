@@ -32,7 +32,7 @@ class CANService:
 		self.notifier = Notifier(self.bus, [self.reader])
 
 		self.reader_poller = rx.interval(GAUGE_SAMPLE_RATE).pipe(
-		    ops.map(lambda _: reader.get_message(timeout=0.0)),
+		    ops.map(lambda _: self.reader.get_message(timeout=0.0)),
 		    ops.filter(lambda msg: msg is not None),
 		    ops.share()
 		).subscribe(on_next=self.on_message_received)
