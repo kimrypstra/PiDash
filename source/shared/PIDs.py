@@ -1,3 +1,0 @@
-# PIDs
-
-PID_TEST = 1

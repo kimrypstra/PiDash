@@ -10,7 +10,7 @@ from source.dash.DashViewModel import DashViewModel
 from source.gauge.NumericGauge import NumericGauge
 from source.shared.Constants import THRESHOLD_TEST, BUTTON_HEIGHT
 from source.shared.views.DashButton import DashButton
-from source.shared.PIDs import PID_TEST
+from source.shared.Signals import SIGNAL_TEST
 from source.shared.Conversions import CONVERSION_TEST, CONVERSION_POS_NEG
 
 NUM_OF_COLUMNS = 2
@@ -23,8 +23,8 @@ class DashView(Screen):
 
 		layout = GridLayout()
 		layout.cols = NUM_OF_COLUMNS
-		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_TEST, 'Boost', 'psi'))
-		layout.add_widget(NumericGauge(PID_TEST, THRESHOLD_TEST, CONVERSION_POS_NEG, 'Pos/neg', '+/-'))
+		layout.add_widget(NumericGauge(SIGNAL_TEST, THRESHOLD_TEST, CONVERSION_TEST(), 'Boost', 'psi'))
+		layout.add_widget(NumericGauge(SIGNAL_BRAKES, THRESHOLD_BRAKES, CONVERSION_BRAKES(), 'Brakes', 'on/off'))
 
 		# Spacer
 		layout.add_widget(BoxLayout(size_hint_y=None))

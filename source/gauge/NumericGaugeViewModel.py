@@ -15,21 +15,26 @@ class NumericGaugeViewModel(EventDispatcher):
 	value = StringProperty('')
 	alarm = BooleanProperty(False)
 
-	def __init__(self, pid, threshold, conversion, **kwargs):
+	def __init__(self, signal, threshold, conversion, **kwargs):
 		super(NumericGaugeViewModel, self).__init__(**kwargs)
 		self.threshold = threshold
 		self.conversion = conversion
-		self.pid = pid
+		self.signal = signal
 		self.can_provider = CANProvider.shared()
 		self.start_subscription()
 
 	def start_subscription(self):
-		self.subscription = self.can_provider.subscribe_to_pid(self.pid) \
+		self.subscription = self.can_provider.subscribe_to_pid(self.signal.pid) \
 			.subscribe(
 				on_next = lambda value: Clock.schedule_once(lambda dt: self.set_value(value))
 			)
 		DisposeBag.shared().add(self.subscription)
 
 	def set_value(self, can_frame):
-		self.value = self.conversion(can_frame)
-		self.alarm = can_frame.value >= self.threshold
+		# self.value = self.conversion(can_frame, self.signal)
+		print(can_frame)
+		value = self.conversion.convert(can_frame, self.signal)
+		self.value = str(value)
+		if isinstance(value, (int, float)):
+			self.alarm = value >= self.threshold
+		print(value)

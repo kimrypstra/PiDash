@@ -37,7 +37,7 @@ class CANService(Listener):
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
-		self.can_subject.on_next(CANFrame(pid=msg.arbitration_id, value=int.from_bytes(msg.data, byteorder='big')))
+		self.can_subject.on_next(CANFrame(pid=msg.arbitration_id, data=msg.data, byteorder='big'))
 
 	# Returns a subscription to the common stream filtered for the provided id 
 	def subscribe_to_pid(self, pid):
@@ -77,7 +77,8 @@ class MockCANService:
 				ops.take_until(self.kill_switch),
 				ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 				ops.sample(GAUGE_SAMPLE_RATE),
-				ops.map(lambda i: CANFrame(pid=1, value=i)), # later, pid will be provided by the actual CAN frame
+				# ops.filter(lambda i: i >= 0),
+				ops.map(lambda i: CANFrame(pid=1, data=int(i * 10).to_bytes(length=2, byteorder='big', signed=True))), # later, pid will be provided by the actual CAN frame
 				ops.share()
 			)
 

@@ -1,4 +1,5 @@
 from .CANService import CANService
+# from .CANService import MockCANService
 
 class CANProvider: 
 	_shared = None
@@ -11,6 +12,7 @@ class CANProvider:
 
 	def __init__(self):
 		self.can_service = CANService()
+		# self.can_service = MockCANService()
 
 	def subscribe_to_pid(self, pid):
 		return self.can_service.subscribe_to_pid(pid)
