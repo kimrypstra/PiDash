@@ -62,7 +62,7 @@ class CANService(BaseCANService):
 		self.notifier = Notifier(self.bus, [self.reader])
 
 		self._reader_poller = rx.interval(GAUGE_SAMPLE_RATE).pipe(
-			ops.observe_on(scheduler.ThreadPoolScheduler(1))
+			ops.observe_on(scheduler.ThreadPoolScheduler(1)),
 		    ops.map(lambda _: self.poll_reader),
 		    ops.filter(lambda msg: msg is not None),
 		).subscribe(on_next=self.on_message_received)
