@@ -66,7 +66,7 @@ class CANService(BaseCANService):
 		    ops.map(lambda _: self.poll_reader),
 		    ops.filter(lambda msg: msg is not None),
 		).subscribe(on_next=self.on_message_received)
-		DisposeBag.shared().add(self.reader_poller)
+		DisposeBag.shared().add(self._reader_poller)
 
 	def poll_reader(self): 
 		latest = None
