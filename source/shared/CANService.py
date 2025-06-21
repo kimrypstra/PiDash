@@ -71,6 +71,7 @@ class CANService(BaseCANService, Listener):
 		return self._can_stream.pipe(
 			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 			ops.filter(lambda frame: frame.pid == pid),
+			ops.distinct_until_changed(),
 			ops.take_until(self._kill_switch),
 		)
 
