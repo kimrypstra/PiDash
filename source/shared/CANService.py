@@ -58,25 +58,25 @@ class CANService(BaseCANService):
 		print("Connecting to CAN interface")
 		self.bus = Bus(channel='can0', bustype='socketcan')
 		self.bus.set_filters([])
-		self.reader = BufferedReader()
-		self.notifier = Notifier(self.bus, [self.reader])
+		# self.reader = BufferedReader()
+		self.notifier = Notifier(self.bus, [self])
 
-		self._reader_poller = rx.interval(GAUGE_SAMPLE_RATE).pipe(
-			ops.observe_on(scheduler.ThreadPoolScheduler(1)),
-		    ops.map(lambda _: self.poll_reader),
-		    ops.filter(lambda msg: msg is not None),
-		).subscribe(on_next=self.on_message_received)
-		DisposeBag.shared().add(self._reader_poller)
+		# self._reader_poller = rx.interval(GAUGE_SAMPLE_RATE).pipe(
+		# 	ops.observe_on(scheduler.ThreadPoolScheduler(1)),
+		#     ops.map(lambda _: self.poll_reader),
+		#     ops.filter(lambda msg: msg is not None),
+		# ).subscribe(on_next=self.on_message_received)
+		# DisposeBag.shared().add(self._reader_poller)
 
-	def poll_reader(self): 
-		latest = None
-		while True:
-			msg = self.reader.get_message(timeout=0.0)
-			if msg is None: 
-				break 
+	# def poll_reader(self): 
+	# 	latest = None
+	# 	while True:
+	# 		msg = self.reader.get_message(timeout=0.0)
+	# 		if msg is None: 
+	# 			break 
 
-			latest = msg
-		return latest
+	# 		latest = msg
+	# 	return latest
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
@@ -85,9 +85,9 @@ class CANService(BaseCANService):
 	def subscribe_to_pid(self, pid):
 		self.bus.set_filters([{"can_id": pid, "can_mask": 0x7FF}])
 		return self._can_stream.pipe(
+			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 			ops.filter(lambda frame: frame.pid == pid),
 			ops.take_until(self._kill_switch),
-			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 		)
 
 	def shutdown(self):
