@@ -35,4 +35,3 @@ class NumericGaugeViewModel(EventDispatcher):
 		self.value = str(value)
 		if isinstance(value, (int, float)):
 			self.alarm = value >= self.threshold
-		print(f'New value: {value}')
