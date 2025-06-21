@@ -74,7 +74,7 @@ class CANService(BaseCANService):
 
 	def subscribe_to_pid(self, pid):
 		self.bus.set_filters([{"can_id": pid, "can_mask": 0x7FF}])
-		return self.stream.pipe(
+		return self._can_stream.pipe(
 			ops.sample(GAUGE_SAMPLE_RATE),
 			ops.filter(lambda frame: frame.pid == pid),
 			ops.take_until(self._kill_switch),
