@@ -31,7 +31,6 @@ class NumericGaugeViewModel(EventDispatcher):
 		DisposeBag.shared().add(self.subscription)
 
 	def set_value(self, can_frame):
-		# self.value = self.conversion(can_frame, self.signal)
 		value = self.conversion.convert(can_frame, self.signal)
 		self.value = str(value)
 		if isinstance(value, (int, float)):

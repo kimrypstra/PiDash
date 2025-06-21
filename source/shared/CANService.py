@@ -58,25 +58,7 @@ class CANService(BaseCANService, Listener):
 		print("Connecting to CAN interface")
 		self.bus = Bus(channel='can0', bustype='socketcan')
 		self.bus.set_filters([])
-		# self.reader = BufferedReader()
 		self.notifier = Notifier(self.bus, [self])
-
-		# self._reader_poller = rx.interval(GAUGE_SAMPLE_RATE).pipe(
-		# 	ops.observe_on(scheduler.ThreadPoolScheduler(1)),
-		#     ops.map(lambda _: self.poll_reader),
-		#     ops.filter(lambda msg: msg is not None),
-		# ).subscribe(on_next=self.on_message_received)
-		# DisposeBag.shared().add(self._reader_poller)
-
-	# def poll_reader(self): 
-	# 	latest = None
-	# 	while True:
-	# 		msg = self.reader.get_message(timeout=0.0)
-	# 		if msg is None: 
-	# 			break 
-
-	# 		latest = msg
-	# 	return latest
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
@@ -107,7 +89,7 @@ class MockCANService(BaseCANService):
 			ops.take_until(self._kill_switch),
 			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 			ops.sample(GAUGE_SAMPLE_RATE),
-			ops.map(lambda i: CANFrame(pid=0x1, data=int(i * 10).to_bytes(length=2, byteorder='big', signed=True))),
+			ops.map(lambda i: CANFrame(pid=0x514, data=int(0x08).to_bytes(length=1, byteorder='big', signed=False))),
 			ops.share()
 		).subscribe(on_next=self._can_stream.on_next)
 		DisposeBag.shared().add(self.number_stream)

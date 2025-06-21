@@ -20,4 +20,4 @@ class Signal:
 	size: int
 
 SIGNAL_TEST = Signal(0x1,0,2)
-SIGNAL_BRAKES = Signal(0x514,0,0) # 08 = brake on, 00 = brake off 
+SIGNAL_BRAKES = Signal(0x514,0,1) # 08 = brake on, 00 = brake off 

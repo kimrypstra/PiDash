@@ -12,10 +12,12 @@ class Conversion(ABC):
 
 	def convert(self, can_frame, signal): 
 		data = self.extractData(can_frame, signal)
+		print(f'Extracted data: {data}')
 		return self._conversion(data)
 
 	def extractData(self, can_frame, signal): 
 		# can_frame.data is a bytearray 
+		print(f'Extracting data from: {can_frame.data}')
 		offset = signal.offset
 		end = signal.offset + signal.size
 		return can_frame.data[offset:end]
@@ -32,6 +34,7 @@ class CONVERSION_POS_NEG(Conversion):
 
 class CONVERSION_BRAKES(Conversion):
 	def _conversion(self, data):
-		number = int.from_bytes(data, byteorder='big')
+		print(f'Converting data: {data}')
+		number = int.from_bytes(data, byteorder='big', signed=False)
 		print(f'New number: {number}')
-		return 'on' if number >= 8 else 'off'
+		return 'on' if number >= 0x08 else 'off'
