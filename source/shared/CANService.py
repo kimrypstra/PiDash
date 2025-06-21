@@ -52,7 +52,7 @@ class BaseCANService(ABC):
 		pass
 
 
-class CANService(BaseCANService): 
+class CANService(BaseCANService, Listener): 
 
 	def connect(self):
 		print("Connecting to CAN interface")
