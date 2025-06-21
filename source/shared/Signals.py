@@ -19,5 +19,5 @@ class Signal:
 	offset: int
 	size: int
 
-SIGNAL_TEST = Signal(1,0,2)
-SIGNAL_BRAKES = Signal(514,0,0) # 08 = brake on, 00 = brake off 
+SIGNAL_TEST = Signal(0x1,0,2)
+SIGNAL_BRAKES = Signal(0x514,0,0) # 08 = brake on, 00 = brake off 

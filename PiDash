@@ -64,7 +64,9 @@ def check_for_updates():
 	except (exc.GitError, OSError) as e: 
 		print(f"Failed to update with error: {e}. \nContinuing launch.")
 
+print(f'Invoked with args: {sys.argv}')
+
 check_for_path()
 check_for_updates()
 
-os.execv(sys.executable, [sys.executable, script_path])
+os.execv(sys.executable, [sys.executable, script_path] + sys.argv)

@@ -15,7 +15,7 @@ class NumericGauge(BoxLayout):
 		"""
 		Initialises an instance of NumericGauge, indended for displaying numerical information _as numbers_
 		like RPM, speed, or gear position etc. Not intended for graphical display of numerical information.
-		I suppose you could also display text.
+		I suppose you could also display text, but that breaks the alarm.
 
 		Args:
 			pid (int): The CAN id we want to display in this gauge

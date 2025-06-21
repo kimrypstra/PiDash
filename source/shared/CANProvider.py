@@ -1,18 +1,20 @@
 from .CANService import CANService
-# from .CANService import MockCANService
+from .CANService import MockCANService
 
 class CANProvider: 
 	_shared = None
 
 	@classmethod
-	def shared(cls):
+	def shared(cls, mocked=False):
 		if cls._shared is None: 
-			cls._shared = cls()
+			cls._shared = cls(mocked)
 		return cls._shared
 
-	def __init__(self):
-		self.can_service = CANService()
-		# self.can_service = MockCANService()
+	def __init__(self, mocked):
+		if mocked:
+			self.can_service = MockCANService()
+		else: 
+			self.can_service = CANService()
 
 	def subscribe_to_pid(self, pid):
 		return self.can_service.subscribe_to_pid(pid)
