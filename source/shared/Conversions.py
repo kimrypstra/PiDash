@@ -33,4 +33,5 @@ class CONVERSION_POS_NEG(Conversion):
 class CONVERSION_BRAKES(Conversion):
 	def _conversion(self, data):
 		number = int.from_bytes(data, byteorder='big')
+		print(f'New number: {number}')
 		return 'on' if number >= 8 else 'off'
