@@ -2,9 +2,9 @@ import sys
 
 # First, force full screen mode 
 from kivy.config import Config
-# Config.set('graphics', 'fullscreen', 'auto')
-# Config.set('graphics', 'borderless', '1')
-# Config.set('graphics', 'resizable', '0')
+Config.set('graphics', 'fullscreen', 'auto')
+Config.set('graphics', 'borderless', '1')
+Config.set('graphics', 'resizable', '0')
 
 
 # Hide mouse cursor if running on the Pi (well, any Linux machine but who cares)
