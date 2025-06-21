@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 import math
+import logging
 
 from can import Bus, Listener, Notifier, BufferedReader
 import reactivex as rx
@@ -59,6 +60,7 @@ class CANService(BaseCANService, Listener):
 		self.bus = Bus(channel='can0', bustype='socketcan')
 		self.bus.set_filters([])
 		self.notifier = Notifier(self.bus, [self])
+		logging.getLogger("can").setLevel(logging.WARNING)
 
 	def on_message_received(self, msg):
 		print(f"ID: {hex(msg.arbitration_id)} Data: {msg.data}")
