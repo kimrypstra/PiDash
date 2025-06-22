@@ -92,7 +92,7 @@ class MockCANService(BaseCANService):
 			ops.take_until(self._kill_switch),
 			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 			ops.sample(GAUGE_SAMPLE_RATE),
-			ops.map(lambda i: CANFrame(pid=0x514, data=int(0x08).to_bytes(length=1, byteorder='big', signed=False))),
+			ops.map(lambda i: CANFrame(pid=0x514, data=int(0b0000_1000).to_bytes(length=1, byteorder='big', signed=False))),
 			ops.share()
 		).subscribe(on_next=self._can_stream.on_next)
 		DisposeBag.shared().add(self.number_stream)

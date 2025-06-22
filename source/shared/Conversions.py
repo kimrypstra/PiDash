@@ -11,11 +11,11 @@ class Conversion(ABC):
 		pass
 
 	def convert(self, can_frame, signal): 
-		data = self.extractData(can_frame, signal)
+		data = self._extract_bytes(can_frame, signal)
 		return self._conversion(data)
 
 	# Extracts the relevant bytes from the bytearray inside can_frame
-	def extractData(self, can_frame, signal): 
+	def _extract_bytes(self, can_frame, signal): 
 
 		"""
 		OK, so: it's not a single signal per BYTE, it could even be a single signal per BIT. So our value of 8 for the brake light switch
@@ -28,6 +28,8 @@ class Conversion(ABC):
 
 		Next steps: 
 		- Bitwise operations 
+		- Alarm as lambda instead of numeric value in gauges 
+		- Base gauge view model? 
 		- Create slightly better gauges, just boost and something else simple
 		- Investigate SSM
 		- Investigate low speed CAN 
@@ -54,4 +56,5 @@ class CONVERSION_POS_NEG(Conversion):
 class CONVERSION_BRAKES(Conversion):
 	def _conversion(self, data):
 		number = int.from_bytes(data, byteorder='big', signed=False)
-		return 'on' if number >= 0x08 else 'off'
+		on = (number >> 3) & 1
+		return 'on' if on else 'off'
