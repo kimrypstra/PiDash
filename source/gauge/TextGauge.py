@@ -7,22 +7,18 @@ from kivy.graphics import Rectangle
 from source.shared.Colours import COLOUR_RED, COLOUR_BLACK
 from source.shared.Fonts import FONT_BLACK, FONT_SEMIBOLD, FONT_SIZE_TITLE, FONT_SIZE_GAUGE
 
-from .NumericGaugeViewModel import NumericGaugeViewModel
+from .TextGaugeViewModel import TextGaugeViewModel
 
-class NumericGauge(BoxLayout):
+class TextGauge(BoxLayout):
 
-	def __init__(self, pid, threshold, conversion, title, units, **kwargs):
-		"""
-		Initialises an instance of NumericGauge, indended for displaying numerical information _as numbers_
-		like RPM, speed, or gear position etc. Not intended for graphical display of numerical information.
-		I suppose you could also display text, but that breaks the alarm.
-
-		Args:
-			pid (int): The CAN id we want to display in this gauge
-			threshold (float): A value above which the gauge turns red
-			conversion (CANFrame) -> str: A function that converts the data from the raw CAN frame into a value displayable in the gauge
-		"""
-		super(NumericGauge, self).__init__(**kwargs)
+	# Initialises an instance of StringGauge, indended for displaying arbitrary data as text.
+	#
+	# Args:
+	# pid (int): The CAN id we want to display in this gauge
+	# alarm (lambda): A labda returning a bool indicating whether the alarm is activated
+	# conversion (CANFrame) -> str: A function that converts the data from the raw CAN frame into a value displayable in the gauge
+	def __init__(self, signal, alarm, conversion, title, units, **kwargs):
+		super(TextGauge, self).__init__(**kwargs)
 
 		self.units = units
 
@@ -54,7 +50,7 @@ class NumericGauge(BoxLayout):
 
 		self.add_widget(v_stack)
 
-		self.view_model = NumericGaugeViewModel(pid, threshold, conversion)
+		self.view_model = TextGaugeViewModel(signal, alarm, conversion)
 		self.view_model.bind(value = self.update_label)
 		self.view_model.bind(alarm = self.update_canvas)
 

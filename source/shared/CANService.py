@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-import math
 import logging
+import math
 
 from can import Bus, Listener, Notifier, BufferedReader
 import reactivex as rx
@@ -29,12 +29,6 @@ class BaseCANService(ABC):
 		return cls._shared
 
 	def __init__(self): 
-		# self.stream = self._can_stream.pipe(
-		# 	ops.take_until(self._kill_switch),
-		# 	ops.sample(GAUGE_SAMPLE_RATE),
-		# 	ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
-		# 	ops.share()
-		# )
 		self.connect()
 
 	# Closes connection to the CANBUS and stops emission of CANFrames on subscriptions 
@@ -99,8 +93,8 @@ class MockCANService(BaseCANService):
 
 	def subscribe_to_pid(self, pid):
 		return self._can_stream.pipe(
-				ops.filter(lambda frame: frame.pid == pid)
-			)
+			ops.filter(lambda frame: frame.pid == pid)
+		)
 
 	def shutdown(self):
 		self._kill_switch.on_next(True)

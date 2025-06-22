@@ -3,21 +3,26 @@ import threading
 
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
-from kivy.properties import Property, StringProperty, BooleanProperty
+from kivy.properties import Property, BooleanProperty
 import reactivex as rx
 from reactivex import operators as ops
 
 from source.shared.DisposeBag import DisposeBag
 from source.shared.CANProvider import CANProvider 
 
-class NumericGaugeViewModel(EventDispatcher):
+from abc import ABC, abstractmethod
 
-	value = StringProperty('')
+# Base class for gauges. 
+#
+# Override `value` with a specific type of `Property` acceptable by your gauge. 
+class GaugeViewModel(EventDispatcher, ABC):
+
+	value = Property(None)
 	alarm = BooleanProperty(False)
 
-	def __init__(self, signal, threshold, conversion, **kwargs):
-		super(NumericGaugeViewModel, self).__init__(**kwargs)
-		self.threshold = threshold
+	def __init__(self, signal, should_alarm, conversion, **kwargs):
+		super().__init__(**kwargs)
+		self.should_alarm = should_alarm
 		self.conversion = conversion
 		self.signal = signal
 		self.can_provider = CANProvider.shared()
@@ -30,8 +35,10 @@ class NumericGaugeViewModel(EventDispatcher):
 			)
 		DisposeBag.shared().add(self.subscription)
 
+	def set_alarm(self, new_value):
+		if self.should_alarm is not None:
+			self.alarm = self.should_alarm(new_value)
+
+	@abstractmethod
 	def set_value(self, can_frame):
-		value = self.conversion.convert(can_frame, self.signal)
-		self.value = str(value)
-		if isinstance(value, (int, float)):
-			self.alarm = value >= self.threshold
+		pass

@@ -15,6 +15,11 @@ class Conversion(ABC):
 		return self._conversion(data)
 
 	# Extracts the relevant bytes from the bytearray inside can_frame
+	#
+	# Note, does not check the value of any bytes or bits. Just returns the smallest chunk of data that is common to all signals - a range of bytes. 
+	# It's up to the individual conversion to extract the actual value from the bytes. The reason for this is some signals take up multiple full bytes, 
+	# - for example RPM spans 2 bytes - while others span a single bit - for example brake switch. So the minimum this function will return is a single 
+	# byte, and the brake conversion method will inspect the individual bit, and the RPM conversion will inspect the range of bits. 
 	def _extract_bytes(self, can_frame, signal): 
 
 		"""
@@ -27,9 +32,10 @@ class Conversion(ABC):
 		to extract_bytes
 
 		Next steps: 
-		- Bitwise operations 
-		- Alarm as lambda instead of numeric value in gauges 
-		- Base gauge view model? 
+		x Bitwise operations 
+		x Alarm as lambda instead of numeric value in gauges 
+		x Base gauge view model? 
+		- Create a dial gauge
 		- Create slightly better gauges, just boost and something else simple
 		- Investigate SSM
 		- Investigate low speed CAN 
@@ -56,5 +62,5 @@ class CONVERSION_POS_NEG(Conversion):
 class CONVERSION_BRAKES(Conversion):
 	def _conversion(self, data):
 		number = int.from_bytes(data, byteorder='big', signed=False)
-		on = (number >> 3) & 1
-		return 'on' if on else 'off'
+		is_on = (number >> 3) & 1
+		return 'on' if is_on else 'off'
