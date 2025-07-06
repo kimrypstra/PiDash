@@ -36,7 +36,7 @@ class Conversion(ABC):
 		x Alarm as lambda instead of numeric value in gauges 
 		x Base gauge view model? 
 		- Create a dial gauge
-		- Create slightly better gauges, just boost and something else simple
+		- Create slightly more useful gauges, just boost and something else simple
 		- Investigate SSM
 		- Investigate low speed CAN 
 		- Investigate arduino based engine bay sensor suite connected to Pi via UART 

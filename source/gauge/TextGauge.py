@@ -11,10 +11,10 @@ from .TextGaugeViewModel import TextGaugeViewModel
 
 class TextGauge(BoxLayout):
 
-	# Initialises an instance of StringGauge, indended for displaying arbitrary data as text.
+	# Initialises an instance of StringGauge, intended for displaying arbitrary data as text.
 	#
 	# Args:
-	# pid (int): The CAN id we want to display in this gauge
+	# signal (int): The CAN id we want to display in this gauge
 	# alarm (lambda): A labda returning a bool indicating whether the alarm is activated
 	# conversion (CANFrame) -> str: A function that converts the data from the raw CAN frame into a value displayable in the gauge
 	def __init__(self, signal, alarm, conversion, title, units, **kwargs):
@@ -28,7 +28,7 @@ class TextGauge(BoxLayout):
 				text = title, 
 				font_name = FONT_SEMIBOLD,
 				font_size = FONT_SIZE_TITLE,
-				size_hint_y = 0.1,
+				# size_hint_y = 0.1,
 			)
 		v_stack.add_widget(self.title_label)
 
@@ -36,7 +36,7 @@ class TextGauge(BoxLayout):
 				text = '', 
 				font_name = FONT_BLACK,
 				font_size = FONT_SIZE_GAUGE,
-				size_hint_y = 1
+				# size_hint_y = 1
 			)
 		v_stack.add_widget(self.label)
 
@@ -44,7 +44,7 @@ class TextGauge(BoxLayout):
 				text = units, 
 				font_name = FONT_SEMIBOLD,
 				font_size = FONT_SIZE_TITLE,
-				size_hint_y = 0.1
+				# size_hint_y = 0.1
 			)
 		v_stack.add_widget(self.units_label)
 
