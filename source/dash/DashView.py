@@ -25,7 +25,7 @@ class DashView(Screen):
 		layout = GridLayout()
 		layout.cols = NUM_OF_COLUMNS
 		layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
-		layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = lambda value: value > 75, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
+		layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = lambda value: value > 1, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
 		# layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
 		layout.add_widget(TextGauge(signal = SIGNAL_BRAKES, alarm = lambda value: value == "on", conversion = CONVERSION_BRAKES(), title = 'Brakes', units = 'on/off'))
 
