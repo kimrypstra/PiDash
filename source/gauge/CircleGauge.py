@@ -1,33 +1,32 @@
 from kivy.clock import Clock
+from kivy.core.image import Image as CoreImage
 from kivy.graphics import PushMatrix, PopMatrix, Rotate, Rectangle
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
-from kivy.core.image import Image as CoreImage
 from kivy.uix.label import Label
 
-from source.shared.Images import SEMICIRCLE_GAUGE_FACE, SEMICIRCLE_GAUGE_NEEDLE
-
-from .SemicircleGaugeViewModel import SemicircleGaugeViewModel
-from source.shared.Colours import COLOUR_BLACK
+from .CircleGaugeViewModel import CircleGaugeViewModel
+from source.shared.Images import CIRCLE_GAUGE_FACE, CIRCLE_GAUGE_NEEDLE
+from source.shared.Colours import COLOUR_BLACK, COLOUR_RED
 from source.shared.Fonts import FONT_BLACK, FONT_SIZE_GAUGE
 
-class SemicircleGauge(AnchorLayout): 
+ANGLE_OFFSET = 45
 
-	# Initialises an instance of SemicircleGauge, intended for displaying numerical data with a needle against a face with scale.
+class CircleGauge(AnchorLayout): 
+
+	# Initialises an instance of CircleGauge, intended for displaying numerical data with a needle against a face with scale.
 	#
 	# Args:
 	# signal (int): The CAN id we want to display in this gauge
-	# alarm (lambda): A labda returning a bool indicating whether the alarm is activated
+	# alarm (lambda): A lambda returning a bool indicating whether the alarm is activated
 	# conversion (CANFrame) -> str: A function that converts the data from the raw CAN frame into a value displayable in the gauge
 	def __init__(self, signal, alarm, conversion, title, units, min_value, max_value, **kwargs):
-		super(SemicircleGauge, self).__init__(anchor_x = 'center', anchor_y = 'center', **kwargs)
+		super(CircleGauge, self).__init__(anchor_x = 'center', anchor_y = 'center', **kwargs)
 		self.units = units
 
-		self.angle_offset = 45
-
 		self.face = Image(
-			source = SEMICIRCLE_GAUGE_FACE, 
+			source = CIRCLE_GAUGE_FACE, 
 			size_hint = (1.0, 1.0),
 			keep_ratio = True,
 			allow_stretch = False
@@ -54,7 +53,7 @@ class SemicircleGauge(AnchorLayout):
 		self.add_widget(self.title_float)
 
 		self.needle_angle = 0
-		self.needle_texture = CoreImage(SEMICIRCLE_GAUGE_NEEDLE).texture
+		self.needle_texture = CoreImage(CIRCLE_GAUGE_NEEDLE).texture
 
 		with self.canvas:
 			PushMatrix()
@@ -69,11 +68,11 @@ class SemicircleGauge(AnchorLayout):
 			)
 			PopMatrix()
 
-		self.view_model = SemicircleGaugeViewModel(signal, alarm, conversion, min_value, max_value)
+		self.view_model = CircleGaugeViewModel(signal, alarm, conversion, min_value, max_value)
 
 		self.view_model.bind(value = self.update_label)
 		self.view_model.bind(angle = self.update_angle)
-	# 	# self.view_model.bind(alarm = self.update_canvas)
+		self.view_model.bind(alarm = self.update_canvas)
 
 		self.bind(pos=self.update_positions, size=self.update_size)
 		Clock.schedule_once(self._force_update, 0)
@@ -128,5 +127,10 @@ class SemicircleGauge(AnchorLayout):
 		self.value_label.text = f"{value:.1f}"
 
 	def update_angle(self, view_model, value):
-		self.rotate.angle = value + self.angle_offset
-		self.needle_angle = value + self.angle_offset
+		self.rotate.angle = value + ANGLE_OFFSET
+		self.needle_angle = value + ANGLE_OFFSET
+
+	def update_canvas(self, view_model, value):
+		with self.canvas.before: 
+			self.canvas.before.add(COLOUR_RED if view_model.alarm else COLOUR_BLACK)
+			self.rect = Rectangle(pos = self.pos, size = self.size)
