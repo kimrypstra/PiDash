@@ -2,6 +2,7 @@
 
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
+import struct
 
 @dataclass
 class Conversion(ABC):
@@ -51,8 +52,9 @@ class Conversion(ABC):
 
 class CONVERSION_TEST(Conversion):
 	def _conversion(self, data): 
-		number = int.from_bytes(data, byteorder='big', signed=True)
-		return number
+		# number = int.from_bytes(data, byteorder='big', signed=True)
+		number = struct.unpack('>d', data)[0]
+		return number * 100
 
 class CONVERSION_POS_NEG(Conversion):
 	def _conversion(self, data):

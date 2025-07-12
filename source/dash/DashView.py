@@ -14,7 +14,7 @@ from source.shared.views.DashButton import DashButton
 from source.shared.Signals import SIGNAL_TEST, SIGNAL_BRAKES
 from source.shared.Conversions import CONVERSION_TEST, CONVERSION_BRAKES
 
-NUM_OF_COLUMNS = 2
+NUM_OF_COLUMNS = 3
 
 class DashView(Screen):
 	def __init__(self, **kwargs):
@@ -24,7 +24,9 @@ class DashView(Screen):
 
 		layout = GridLayout()
 		layout.cols = NUM_OF_COLUMNS
-		layout.add_widget(SemicircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi'))
+		layout.add_widget(SemicircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
+		layout.add_widget(SemicircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
+		# layout.add_widget(SemicircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
 		layout.add_widget(TextGauge(signal = SIGNAL_BRAKES, alarm = lambda value: value == "on", conversion = CONVERSION_BRAKES(), title = 'Brakes', units = 'on/off'))
 
 		# Spacer
