@@ -1,5 +1,5 @@
 # Gauge Constants
-GAUGE_SAMPLE_RATE = 0.05 # emissions per <x> seconds
+GAUGE_SAMPLE_RATE = 1.0 # emissions per <x> seconds
 THRESHOLD_TEST = 1.0
 THRESHOLD_BRAKES = 8.0
 

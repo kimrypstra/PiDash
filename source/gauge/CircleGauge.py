@@ -1,19 +1,24 @@
+from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
 from kivy.graphics import Color, PushMatrix, PopMatrix, Rotate, Rectangle, Ellipse
+from kivy.properties import NumericProperty
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 
 from .CircleGaugeViewModel import CircleGaugeViewModel
-from source.shared.Images import CIRCLE_GAUGE_FACE, CIRCLE_GAUGE_NEEDLE
 from source.shared.Colours import COLOUR_BLACK, COLOUR_RED
+from source.shared.Constants import GAUGE_SAMPLE_RATE
+from source.shared.Images import CIRCLE_GAUGE_FACE, CIRCLE_GAUGE_NEEDLE
 from source.shared.Fonts import FONT_BLACK, FONT_SIZE_GAUGE
 
 ANGLE_OFFSET = 45
 
 class CircleGauge(AnchorLayout): 
+
+	animated_angle = NumericProperty(0)
 
 	# Initialises an instance of CircleGauge, intended for displaying numerical data with a needle against a face with scale.
 	#
@@ -67,6 +72,8 @@ class CircleGauge(AnchorLayout):
 				pos = (0, 0)
 			)
 			PopMatrix()
+
+		self.bind(animated_angle=self._on_animated_angle)
 
 		self.view_model = CircleGaugeViewModel(signal, alarm, conversion, min_value, max_value)
 
@@ -126,9 +133,16 @@ class CircleGauge(AnchorLayout):
 	def update_label(self, view_model, value):
 		self.value_label.text = f"{value:.1f}"
 
+	def _on_animated_angle(self, instance, value):
+		self.rotate.angle = value
+
 	def update_angle(self, view_model, value):
-		self.rotate.angle = value + ANGLE_OFFSET
-		self.needle_angle = value + ANGLE_OFFSET
+		target_angle = value + ANGLE_OFFSET
+		anim = Animation(animated_angle = target_angle, duration = GAUGE_SAMPLE_RATE, t = 'linear')
+		anim.start(self)
+		# self.needle_angle = target_angle
+		# self.rotate.angle = value + ANGLE_OFFSET
+		# self.needle_angle = value + ANGLE_OFFSET
 
 	# def update_canvas(self, view_model, value):
 	# 	with self.canvas.before: 
