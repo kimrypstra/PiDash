@@ -1,13 +1,13 @@
 from kivy.clock import Clock
 from kivy.core.image import Image as CoreImage
-from kivy.graphics import Color, PushMatrix, PopMatrix, Rotate, Rectangle
+from kivy.graphics import Color, PushMatrix, PopMatrix, Rotate, Rectangle, Ellipse
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.label import Label
 
 from .CircleGaugeViewModel import CircleGaugeViewModel
-from source.shared.Images import CIRCLE_GAUGE_FACE, CIRCLE_GAUGE_NEEDLE, CIRCLE_GAUGE_ALARM
+from source.shared.Images import CIRCLE_GAUGE_FACE, CIRCLE_GAUGE_NEEDLE
 from source.shared.Colours import COLOUR_BLACK, COLOUR_RED
 from source.shared.Fonts import FONT_BLACK, FONT_SIZE_GAUGE
 
@@ -139,10 +139,13 @@ class CircleGauge(AnchorLayout):
 		self.canvas.before.clear()
 		with self.canvas.before:
 			if view_model.alarm:
-				alarm_size = (self.width * 0.5, self.height * 0.5)
-				w, h = alarm_size
-				alarm_texture = CoreImage(CIRCLE_GAUGE_ALARM).texture
-				self.rect = Rectangle(texture = alarm_texture, pos = (self.center_x - w / 2, self.center_y - h / 2), size = alarm_size)
+				Color(1, 0, 0, 1)
+				w, h = (self.width, self.height)
+				self.circle = Ellipse(
+					pos = (self.center_x - h / 2, self.center_y - h / 2),
+					size = (h, h)
+				)
+
 			else: 
 				Color(0, 0, 0, 1)
 				self.rect = Rectangle(pos = self.pos, size = self.size)
