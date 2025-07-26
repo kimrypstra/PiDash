@@ -62,6 +62,7 @@ class CANService(BaseCANService, Listener):
 		self._can_stream.on_next(CANFrame(pid=msg.arbitration_id, data=msg.data))
 
 	def subscribe_to_pid(self, pid):
+		print(f"Subscribing to pid: {pid}")
 		self.bus.set_filters([{"can_id": pid, "can_mask": 0x7FF}])
 		return self._can_stream.pipe(
 			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
