@@ -11,8 +11,8 @@ from source.gauge.TextGauge import TextGauge
 from source.gauge.CircleGauge import CircleGauge
 from source.shared.Constants import THRESHOLD_TEST, THRESHOLD_BRAKES, BUTTON_HEIGHT
 from source.shared.views.DashButton import DashButton
-from source.shared.Signals import SIGNAL_TEST, SIGNAL_BRAKES
-from source.shared.Conversions import CONVERSION_TEST, CONVERSION_BRAKES
+from source.shared.Signals import SIGNAL_TEST, SIGNAL_BRAKES, SIGNAL_MAP
+from source.shared.Conversions import CONVERSION_TEST, CONVERSION_BRAKES, CONVERSION_PASSTHROUGH_INT
 
 NUM_OF_COLUMNS = 3
 
@@ -24,8 +24,7 @@ class DashView(Screen):
 
 		layout = GridLayout()
 		layout.cols = NUM_OF_COLUMNS
-		layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
-		layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = lambda value: value > 1, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
+		layout.add_widget(CircleGauge(signal = SIGNAL_MAP, alarm = None, conversion = CONVERSION_PASSTHROUGH_INT(), title = 'MAP', units = 'psi', min_value = 0, max_value = 25))
 		# layout.add_widget(CircleGauge(signal = SIGNAL_TEST, alarm = None, conversion = CONVERSION_TEST(), title = 'Boost', units = 'psi', min_value = 0, max_value = 100))
 		layout.add_widget(TextGauge(signal = SIGNAL_BRAKES, alarm = lambda value: value == "on", conversion = CONVERSION_BRAKES(), title = 'Brakes', units = 'on/off'))
 

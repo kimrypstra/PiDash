@@ -66,3 +66,8 @@ class CONVERSION_BRAKES(Conversion):
 		number = int.from_bytes(data, byteorder='big', signed=False)
 		is_on = (number >> 3) & 1
 		return 'on' if is_on else 'off'
+
+class CONVERSION_PASSTHROUGH_INT(Conversion):
+	def _conversion(self, data):
+		number = int.from_bytes(data, byteorder='big', signed=True)
+		return number

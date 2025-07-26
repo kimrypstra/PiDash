@@ -88,7 +88,7 @@ class MockCANService(BaseCANService):
 			ops.subscribe_on(scheduler.ThreadPoolScheduler(1)),
 			ops.sample(GAUGE_SAMPLE_RATE),
 			# ops.map(lambda i: CANFrame(pid=0x1, data=int(i * 10000).to_bytes(length=8, byteorder='big', signed=True))),
-			ops.map(lambda i: CANFrame(pid = 0x1, data = struct.pack('>d', i))),
+			ops.map(lambda i: CANFrame(pid = 0x601, data = struct.pack('>d', i))),
 			ops.share()
 		).subscribe(on_next=self._can_stream.on_next)
 		DisposeBag.shared().add(self.number_stream)
